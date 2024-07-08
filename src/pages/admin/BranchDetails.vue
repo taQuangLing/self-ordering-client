@@ -52,9 +52,11 @@
                 </div>
                 <div class="qrcode" flex>
                     <span>Mã Qrcode</span>
-                    <div class="img">
-                        <img :src="branch.qrcode" alt="" style="width: 200px">
+                    <div class="img" style="justify-content: start;" flex>
+                        <img :src="branch.qrcode" alt="" style="width: 200px;margin-right: 20px;">
+                        <button class="qr-new" @click="newQrCode">Tạo lại</button>
                     </div>
+                    
                 </div>
             </div>
             <div class="menu">
@@ -131,7 +133,7 @@ export default {
                     this.createdAt = this.branch.createdAt;
                     this.img = this.branch.logo;
                     this.menuList = this.branch.menuItemRes;
-
+                    this.fileList.clear();
                     this.fileList.push({
                         url: this.img
                     })
@@ -186,6 +188,21 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        newQrCode(){
+            axios.put(this.$store.state.baseUrl + "/admin/v1/branches/" + this.branch.id + "/qr", {}, {
+                headers: {Authorization: "Bearer " + localStorage.getItem("user") }
+            }).then(res => {
+                if (res.data.code != 2000) {
+                    this.$message.error(res.data.description);
+                    return false;
+                }
+                this.$message.success("Tạo mã Qr mới thành công");
+                this.getBranchDetails();
+                return true;
+            }).catch(err => {
+                console.log(err)
+            })
         }
     },
     mounted() {
@@ -387,5 +404,17 @@ export default {
 .is-all>>>.el-checkbox__label {
     font-size: 15px;
     font-weight: 400;
+}
+
+.qr-new {
+    height: 35px;
+    width: 100px;
+    background: white;
+    border: 1px solid;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.qr-new:hover {
+    background-color: #f5f5f5;
 }
 </style>

@@ -4,7 +4,7 @@
 
 <script>
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export default {
     data() {
@@ -13,22 +13,11 @@ export default {
         }
     },
     mounted() {
-        const jwt = localStorage.getItem('user');
-        if (jwt == null) {
-            this.genToken();
-        } else {
-            axios.put(this.$store.state.baseUrl + "/auth/v1/check-token", {
-                jwt: jwt
-            }).then(res => {
-                if (res.data.code != 4010) {
-
-                } else
-                    this.$router.push('/');
-            }).catch(err => {
-                console.log(err);
-                this.$router.push('/error');
-            })
-        }
+        localStorage.clear("user");
+        localStorage.clear("id");
+        localStorage.clear('branchId', branchId);
+        localStorage.clear('tableNumber', tableNumber);
+        this.genToken();
         this.loading = false;
     },
     methods: {
