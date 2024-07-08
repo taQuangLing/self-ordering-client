@@ -138,6 +138,10 @@ export default {
     handleCommand(param) {
       switch (param.command) {
         case 'edit':
+          if (param.order.status == 'Đang pha chế'){
+            this.$warning("Đơn hàng đang pha chế không thể chỉnh sửa");
+            return;
+          }
           this.edit(param.order.id);
           break;
         case 'payment':
