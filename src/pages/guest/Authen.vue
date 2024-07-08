@@ -13,10 +13,11 @@ export default {
         }
     },
     mounted() {
-        localStorage.clear("user");
-        localStorage.clear("id");
-        localStorage.clear('branchId', branchId);
-        localStorage.clear('tableNumber', tableNumber);
+        localStorage.removeItem('user');
+        localStorage.removeItem('branchId');
+        localStorage.removeItem('tableNumber');
+        localStorage.removeItem('id');
+        console.log("mounted");
         this.genToken();
         this.loading = false;
     },
@@ -29,7 +30,6 @@ export default {
                 'code=' + code,
                 '&tableNumber=' + tableNumber
             ).then(response => {
-                console.log("authen");
                 const jwt = JSON.stringify(response.data.data.jwt).replace(/\"/g, "");
                 const id = jwtDecode(jwt).id;
                 const branchId = jwtDecode(jwt).branchId;
