@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = 'http://localhost:8080/api/auth/v1/';
+const API_URL = 'https://self-ordering-server-238a7b7d70a2.herokuapp.com/api/auth/v1/';
 
 class AuthService {
   async login(user) {
