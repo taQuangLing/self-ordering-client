@@ -36,6 +36,10 @@ export default {
     },
     beforeMount() {
         this.getOrders();
+        this.interval = setInterval(this.getOrders, 50000);
+    },
+    beforeDestroy() {
+        clearInterval(this.interval);
     }
 }
 </script>
@@ -61,22 +65,22 @@ export default {
 }
 
 .main {
-  flex-grow: 1;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
 }
 
 .main::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 .main::-webkit-scrollbar-thumb {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .main::-webkit-scrollbar-track {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .main>>>.order-item {

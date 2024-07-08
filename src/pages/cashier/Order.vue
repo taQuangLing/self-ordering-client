@@ -516,6 +516,10 @@ export default {
 }
 
 .products {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, 200px);
+    grid-template-rows: repeat(2, 233px);
     width: calc(100% - 800px);
     overflow-y: auto;
     height: 100%;
