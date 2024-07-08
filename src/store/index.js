@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
     auth,
   },
   state: {
-    baseUrl: "http://localhost:8080/api",
+    baseUrl: "https://self-ordering-server-238a7b7d70a2.herokuapp.com/api",
   },
   mutations: {
   },

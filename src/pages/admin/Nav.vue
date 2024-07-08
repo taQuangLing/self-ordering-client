@@ -41,10 +41,10 @@
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>Thông tin</el-dropdown-item>
-                        <el-dropdown-item>Đăng xuất</el-dropdown-item>
+                        <!-- <el-dropdown-item>Đăng xuất</el-dropdown-item> -->
                     </el-dropdown-menu>
                 </el-dropdown>
-                <button class="logout">Đăng xuất</button>
+                <button class="logout" @click="logout">Đăng xuất</button>
             </div>
         </el-col>
         <div class="content">
@@ -61,6 +61,10 @@ export default {
         };
     },
     methods: {
+        logout (){
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/login');
+        }
     },
     mounted(){
         switch (this.$route.path) {
@@ -134,8 +138,8 @@ img {
 }
 
 .is-active {
-    background-color: #AA715A;
-    color: white;
+    background-color: #AA715A !important;
+    color: white !important;
 }
 
 .el-menu-item.is-active i {
@@ -147,23 +151,31 @@ img {
 }
 
 .el-icon-user {
-    color: rgb(83, 83, 83);
+    color: #929292;
     font-size: 27px;
-    border: solid 1px rgb(82, 82, 82);
+    border: solid 1px #929292;
     width: 38px;
     height: 38px;
     border-radius: 25px;
     margin-right: 15px;
-    color: rgb(83, 83, 83);
     font-size: 24px;
     width: 35px;
     height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #ffffff
+}
+
+.el-icon-user:hover {
+    background-color: #AA715A;
+    color: rgb(255, 255, 255);
+    border: 1px solid #AA715A;
+    cursor: pointer;
 }
 
 .account {
+    width: 160px;
     display: flex;
     position: absolute;
     bottom: 30px;
@@ -173,17 +185,20 @@ img {
 }
 
 .logout {
-    width: 150px;
+    min-width: 120px;
+    width: 100%;
     height: 35px;
     font-size: 15px;
-    background-color: #00000000;
-    border: 1px solid #444444;
+    background-color: #ffffff;
+    border: 1px solid #929292;
+    color: #414141;
     border-radius: 7px;
 }
 
 .logout:hover {
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
+    background-color: #AA715A;
+    color: rgb(255, 255, 255);
+    border: 1px solid #fdfdfd;
     cursor: pointer;
 }
 </style>
