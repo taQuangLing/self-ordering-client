@@ -7,8 +7,8 @@
                     <div class="social-container">
                     </div>
                     <span>or use your account</span>
-                    <input type="text" placeholder="Email" v-model="email" />
-                    <input type="password" placeholder="Password" v-model="password" />
+                    <input type="text" placeholder="Phone..." v-model="email" />
+                    <input type="password" placeholder="Password..." v-model="password" />
                     <a href="#">Forgot your password?</a>
                     <button @click="handleSignIn">Sign In</button>
                 </form>
