@@ -133,7 +133,6 @@ export default {
                     this.createdAt = this.branch.createdAt;
                     this.img = this.branch.logo;
                     this.menuList = this.branch.menuItemRes;
-                    this.fileList.clear();
                     this.fileList.push({
                         url: this.img
                     })
@@ -198,7 +197,7 @@ export default {
                     return false;
                 }
                 this.$message.success("Tạo mã Qr mới thành công");
-                this.getBranchDetails();
+                this.branch.qrcode = res.data.data.qrCode;
                 return true;
             }).catch(err => {
                 console.log(err)

@@ -36,7 +36,7 @@ export default {
     },
     beforeMount() {
         this.getOrders();
-        this.interval = setInterval(this.getOrders, 50000);
+        this.interval = setInterval(this.getOrders, 5000);
     },
     beforeDestroy() {
         clearInterval(this.interval);
