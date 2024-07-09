@@ -7,17 +7,17 @@
         </router-link>
 
         <router-link to="/cashier/order">
-          <i :class="{'el-icon-shopping-cart-2': true, active: state === 'order'}" @click="state = 'order'"></i>
+          <i :class="{ 'el-icon-shopping-cart-2': true, active: state === 'order' }" @click="state = 'order'"></i>
         </router-link>
       </div>
 
-      <el-dropdown :hide-on-click="false">
+      <el-dropdown :hide-on-click="false" @command="handleCommand">
         <span class="el-dropdown-link">
           <i class="el-icon-user"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>Thông tin</el-dropdown-item>
-          <el-dropdown-item>Đăng xuất</el-dropdown-item>
+          <el-dropdown-item :command="{ action: 'info' }">Thông tin</el-dropdown-item>
+          <el-dropdown-item :command="{ action: 'logout' }">Đăng xuất</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -34,6 +34,19 @@ export default {
     return {
       state: "home",
     };
+  },
+  methods: {
+    handleCommand(command) {
+      switch (command.action) {
+        case "info":
+          this.$warning("Chức năng này đang được phát triển");
+          break;
+        case "logout":
+          this.$store.dispatch('auth/logout');
+          this.$router.push('/login');
+          break;
+      }
+    },
   },
   watch: {
     "$route.path": {
