@@ -90,7 +90,7 @@ export default {
             })
         },
         save() {
-            if (this.name == '' || this.phoneNumber == '' || this.branchSelectedId == 0 || this.positionSelectedId == 0) {
+            if (this.name == '' || this.phoneNumber == '' || this.branchSelectedId == 0) {
                 this.$message({
                     message: 'Vui lòng điền đầy đủ thông tin',
                     type: 'warning'
