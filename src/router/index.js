@@ -131,6 +131,7 @@ router.beforeEach((to, from, next) => {
   )
 
   if (!requiresAuth) {
+    this.$warning('Vui lòng đăng nhập lại');
     next('/login') // redirect to login page if user is not authenticated
   } else {
     next() // proceed to route

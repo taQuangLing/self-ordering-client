@@ -24,20 +24,21 @@ export default {
     methods: {
         genToken() {
             const code = this.$route.query.code;
-            const tableNumber = this.$route.query.tableNumber ? this.$route.query.tableNumber : 0;
+            const tableId = this.$route.query.tableId ? this.$route.query.tableId : 0;
+            console.log(tableId);
 
             axios.get(this.$store.state.baseUrl + '/auth/v1/guest-token?' +
-                'code=' + code,
-                '&tableNumber=' + tableNumber
+                'code=' + code +
+                '&tableId=' + tableId
             ).then(response => {
                 const jwt = JSON.stringify(response.data.data.jwt).replace(/\"/g, "");
                 const id = jwtDecode(jwt).id;
                 const branchId = jwtDecode(jwt).branchId;
-                const tableNumber = jwtDecode(jwt).tableNumber ? jwtDecode(jwt).tableNumber : 0;
+                const tableId = jwtDecode(jwt).tableId ? jwtDecode(jwt).tableId : 0;
                 localStorage.setItem('user', jwt);
                 localStorage.setItem('id', id);
                 localStorage.setItem('branchId', branchId);
-                localStorage.setItem('tableNumber', tableNumber);
+                localStorage.setItem('tableId', tableId);
                 this.$router.push('/');
             }).catch(error => {
                 console.log(error);

@@ -256,16 +256,17 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: start;
-        padding: 30px 50px 20px 50px;
+        padding: 10px 50px 10px 50px;
         justify-content: space-between;
-        height: 150px;
+        height: 180px;
     }
 
     .datetime label,
     .branch label,
     .payments label,
     .status label,
-    .note label {
+    .note label,
+    .table label {
         width: 200px;
         color: rgb(117, 117, 117);
         display: inline-flex;
@@ -333,9 +334,11 @@ export default {
     }
 
     .name {
+        width: 200px;
         text-align: left;
-        margin-right: 40px;
+        margin-right: 30px;
         font-weight: 600;
+        overflow: hidden;
     }
 
     .quantity {

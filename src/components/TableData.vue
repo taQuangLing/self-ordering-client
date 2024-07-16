@@ -7,22 +7,24 @@
     </div>
     <hr style="width: 98%;">
     <div class="title">
-      <!-- <span class="code">Mã hóa đơn</span> -->
+      <span class="code">Mã hóa đơn</span>
       <span class="datetime">Thời gian tạo</span>
       <span class="total">Tổng tiền</span>
       <span class="hinh-thuc">Hình thức</span>
       <span class="payment">Phương thức thanh toán</span>
+      <span class="table">Bàn</span>
       <span class="status">Trạng thái</span>
       <div class="space"></div>
     </div>
     <div v-for="(order, index) in ordersResult" v-bind:key="order.id" class="order">
       <hr style="width: 100%">
       <div class="order-info">
-        <!-- <span class="code">{{ order.code }}</span> -->
+        <span class="code">{{ order.code }}</span>
         <span class="datetime">{{ order.orderAt }}</span>
         <span class="total">{{ order.total }}</span>
         <span class="hinh-thuc">{{ order.isOrderAtTable }}</span>
         <span class="payment">{{ order.payments }}</span>
+        <span class="table">{{ order.tableName }}</span>
         <span class="status" :style="statusColor(order.status)">{{
         order.status
       }}</span>
@@ -105,7 +107,8 @@ export default {
           && (order.isOrderAtTable === this.radioHinhThuc || this.radioHinhThuc === "0")
           // && order.code.includes(this.searchInput) 
           && orderAt >= this.fromDate
-          && orderAt <= this.toDate;
+          && orderAt <= this.toDate
+          && (this.searchInput == '' || order.code.includes(this.searchInput));
       });
       this.length = result.length;
       // return result;

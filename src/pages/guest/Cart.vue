@@ -162,13 +162,14 @@ export default {
     },
     payment() {
       let request = {
-        "payments": this.paymentMethod,
-        "isOrderAtTable": this.deliveryMethod,
-        "userId": localStorage.getItem("id"),
-        "branchId": localStorage.getItem("branchId"),
-        "tableNumber": localStorage.getItem("tableNumber"),
+        payments: this.paymentMethod,
+        isOrderAtTable: this.deliveryMethod,
+        userId: localStorage.getItem("id"),
+        branchId: localStorage.getItem("branchId"),
+        tableId: localStorage.getItem("tableId"),
       };
 
+      console.log(request);
       let itemCartList = [];
       this.items.forEach(item => {
         if (item.isCheck) {

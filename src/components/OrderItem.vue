@@ -1,8 +1,14 @@
 <template>
     <div class="order-item">
         <div class="start">
-            <span class="datetime">{{ order.orderAt }}</span>
-            <span :class="[status, statusStyle]">{{ order.status }}</span>
+            <div class="wrapper">
+                <span class="code"><span style="color: #888; font-weight: 300;">Code: </span>{{ order.code }}</span>
+                <span class="datetime">{{ order.orderAt }}</span>
+            </div>
+            <div class="wrapper" style="align-items: end;">
+                <span class="total">{{ order.total }}</span>
+                <span class="status" :style="statusColor(order.status)">{{ order.status }}</span>
+            </div>
         </div>
         <div class="main">
             <div class="item" v-for="item in order.orderItemList" v::key="item.id">
@@ -27,24 +33,23 @@ export default {
     props: ['order'],
     data() {
         return {
-            status: this.order.status,
         }
     },
-    computed: {
-        statusStyle() {
-            switch (this.status) {
+    methods: {
+        statusColor(status) {
+            switch (status) {
                 case "Chờ xác nhận":
-                    return "payment-pending";
-                case "Hoàn thành":
-                    return "done";
+                    return { color: "#FFA500" };
                 case "Đang pha chế":
-                    return "pending";
+                    return { color: "#3278CA" };
                 case "Đã hủy":
-                    return "cancel";
+                    return { color: "#CF2127" };
+                case "Hoàn thành":
+                    return { color: "#0D9F1C" };
                 default:
-                    break;
+                    return {};
             }
-        }
+        },
     }
 }
 

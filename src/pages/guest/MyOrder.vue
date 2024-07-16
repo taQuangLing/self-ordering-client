@@ -84,6 +84,21 @@ export default {
 }
 
 .main>>>.order-item {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+    .wrapper .total {
+        font-size: 17px;
+        font-weight: 500;
+        color: #451717;
+    }
+    .wrapper .code {
+        font-size: 16px;
+    }
+
+
     .start {
         display: flex;
         justify-content: space-between;
@@ -98,13 +113,13 @@ export default {
 
     .datetime {
         color: #656565;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 200;
     }
 
     .status {
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 400;
     }
 
     .item {
@@ -130,6 +145,7 @@ export default {
         font-weight: bold;
         color: #333;
         margin-bottom: 2px;
+        text-align: left;
     }
 
     .size {
@@ -160,20 +176,6 @@ export default {
         color: #363636;
     }
 
-    .pending {
-        color: #3278CA;
-    }
-
-    .payment-pending {
-        color: #FFA500;
-    }
-
-    .done {
-        color: #00D89E;
-    }
-
-    .cancel {
-        color: #FF0000;
-    }
+    
 }
 </style>

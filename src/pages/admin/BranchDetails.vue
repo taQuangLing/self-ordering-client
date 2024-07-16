@@ -52,11 +52,31 @@
                 </div>
                 <div class="qrcode" flex>
                     <span>Mã Qrcode</span>
-                    <div class="img" style="justify-content: start;" flex>
+                    <div class="img" style="justify-content: space-between; align-items: center;" flex>
                         <img :src="branch.qrcode" alt="" style="width: 200px;margin-right: 20px;">
-                        <button class="qr-new" @click="newQrCode">Tạo lại</button>
+                        <!-- <button class="qr-new" @click="newQrCode">Tạo lại</button> -->
+                        <i class="el-icon-download download" @click="download(branch.qrcode, branch.name)"></i>
                     </div>
-                    
+                </div>
+                <div class="table">
+                    <span>Danh sách bàn</span>
+                    <div class="tables">
+                        <div style="width: 100%;display: flex;justify-content: end;">
+                            <el-button class="add-table" type="success" @click="addTable">Thêm bàn</el-button>
+                        </div>
+                        <div class="table-item" v-for="(item, index) in tableList" :key="index">
+                            <div class="qr">
+                                <img v-if="item.id" :src="item.qrcode" alt="" style="width: 200px; margin-right: 20px;">
+                                <span>{{ index + 1 }}.</span>
+                                <el-input v-model="item.name"></el-input>
+                            </div>
+                            <div class="actions">
+                                <i class="el-icon-download download" @click="download(item.qrcode, item.name)"></i>
+                                <i class="el-icon-delete" @click="deleteTable(item)"></i>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
             <div class="menu">
@@ -98,6 +118,28 @@ export default {
             fileList: [],
             menuList: [],
             isAll: false,
+            tableList: [
+                {
+                    id: 1,
+                    name: "Bàn 1",
+                    qrcode: "http://res.cloudinary.com/dn1pbep3e/image/upload/v1720449678/rfetoxi1bjrgp7t0sbjg.png"
+                },
+                {
+                    id: 2,
+                    name: "Bàn 1",
+                    qrcode: "http://res.cloudinary.com/dn1pbep3e/image/upload/v1720449678/rfetoxi1bjrgp7t0sbjg.png"
+                },
+                {
+                    id: 3,
+                    name: "Bàn 1",
+                    qrcode: "http://res.cloudinary.com/dn1pbep3e/image/upload/v1720449678/rfetoxi1bjrgp7t0sbjg.png"
+                },
+                {
+                    id: 4,
+                    name: "Bàn 1",
+                    qrcode: "http://res.cloudinary.com/dn1pbep3e/image/upload/v1720449678/rfetoxi1bjrgp7t0sbjg.png"
+                },
+            ],
         };
     },
     computed: {
@@ -133,6 +175,7 @@ export default {
                     this.createdAt = this.branch.createdAt;
                     this.img = this.branch.logo;
                     this.menuList = this.branch.menuItemRes;
+                    this.tableList = this.branch.tableResponse;
                     this.fileList.push({
                         url: this.img
                     })
@@ -158,50 +201,96 @@ export default {
         cancel() {
             this.$router.push({ name: 'branches' });
         },
-        updateBranch() {
-            let data = {
-                id: this.branch.id,
-                name: this.name,
-                address: this.address,
-                city: this.city,
-                town: this.town,
-                status: this.status ? 1 : 0,
-                logo: this.img,
-                createdBy: localStorage.getItem("id"),
-                menuItemRes: this.menuList
-            }
-            axios.put(this.$store.state.baseUrl + "/admin/v1/branches/" + this.branch.id, data, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("user")
+        async updateBranch() {
+            if (this.checkSpace()) {
+                let data = {
+                    id: this.branch.id,
+                    name: this.name,
+                    address: this.address,
+                    city: this.city,
+                    town: this.town,
+                    status: this.status ? 1 : 0,
+                    logo: this.img,
+                    createdBy: localStorage.getItem("id"),
+                    menuItemRes: this.menuList,
+                    tableList: this.tableList
                 }
-            })
-                .then(res => {
-                    if (res.data.code != 2000) {
-                        this.$message.error(res.data.description);
-                        return false;
+                axios.put(this.$store.state.baseUrl + "/admin/v1/branches/" + this.branch.id, data, {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("user")
                     }
-                    this.$message.success("Cập nhật thành công");
-                    this.$router.push({ name: 'branches' });
-                    return true;
                 })
-                .catch(err => {
-                    console.log(err)
-                })
+                    .then(res => {
+                        if (res.data.code != 2000) {
+                            this.$message.error(res.data.description);
+                            return false;
+                        }
+                        this.$message.success("Cập nhật thành công");
+                        this.$router.push({ name: 'branches' });
+                        return true;
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            }
+
+
         },
-        newQrCode(){
-            axios.put(this.$store.state.baseUrl + "/admin/v1/branches/" + this.branch.id + "/qr", {}, {
-                headers: {Authorization: "Bearer " + localStorage.getItem("user") }
-            }).then(res => {
-                if (res.data.code != 2000) {
-                    this.$message.error(res.data.description);
-                    return false;
-                }
-                this.$message.success("Tạo mã Qr mới thành công");
-                this.branch.qrcode = res.data.data.qrCode;
-                return true;
-            }).catch(err => {
-                console.log(err)
-            })
+        // newQrCode(){
+        //     axios.put(this.$store.state.baseUrl + "/admin/v1/branches/" + this.branch.id + "/qr", {}, {
+        //         headers: {Authorization: "Bearer " + localStorage.getItem("user") }
+        //     }).then(res => {
+        //         if (res.data.code != 2000) {
+        //             this.$message.error(res.data.description);
+        //             return false;
+        //         }
+        //         this.$message.success("Tạo mã Qr mới thành công");
+        //         this.branch.qrcode = res.data.data.qrCode;
+        //         return true;
+        //     }).catch(err => {
+        //         console.log(err)
+        //     })
+        // }
+        download(url, name) {
+            axios.get(url, { responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: 'application/png' })
+                    const link = document.createElement('a')
+                    link.href = URL.createObjectURL(blob)
+                    link.download = name + ".png"
+                    link.click()
+                    URL.revokeObjectURL(link.href)
+                }).catch(console.error)
+        },
+        checkSpace() {
+            if (this.name == "" || this.address == "") {
+                this.$message.warning("Vui lòng nhập đầy đủ thông tin");
+                return false;
+            }
+
+            if (this.tableList.some(item => !item.name)) {
+                this.$message.warning("Vui lòng nhập tên bàn");
+                return false;
+            }
+
+            return true;
+
+        },
+        addTable() {
+            if (this.tableList.length == 0) {
+                this.tableList.push({
+                    name: "",
+                    qrcode: ""
+                });
+                return;
+            }
+            this.tableList.unshift({
+                name: "",
+                qrcode: ""
+            });
+        },
+        deleteTable(table) {
+            this.tableList = this.tableList.filter(item => item != table);
         }
     },
     mounted() {
@@ -295,7 +384,8 @@ export default {
 .status,
 .created-at,
 .status,
-.qrcode {
+.qrcode,
+.table {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -309,7 +399,8 @@ export default {
 .img .title,
 .status span,
 .created-at span,
-.category-filter .title {
+.category-filter .title,
+.table span {
     text-align: left;
     font-size: 15px;
     color: #575757;
@@ -328,7 +419,8 @@ export default {
 .img .upload-demo,
 >>>.category-filter .el-dropdown,
 .created-at .el-input,
-.status .status-info {
+.status .status-info,
+.tables {
     width: 68%;
     border-radius: 5px;
 }
@@ -413,7 +505,75 @@ export default {
     border-radius: 5px;
     margin-top: 10px;
 }
+
 .qr-new:hover {
     background-color: #f5f5f5;
+}
+
+.table {
+    align-items: start;
+    border-top: 1px solid #c4c4c4;
+    padding-top: 20px;
+}
+
+.tables {
+    text-align: left;
+}
+
+.table-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.table-item .el-input {
+    width: 80%;
+    margin-left: 10px;
+    min-width: 110px;
+    max-width: 190px;
+}
+
+.download {
+    font-size: 20px;
+    margin: 10px;
+    color: #000000;
+}
+
+.download:hover {
+    cursor: pointer;
+    color: #0041f5;
+}
+
+.actions {
+    display: flex;
+}
+
+.el-icon-delete {
+    font-size: 20px;
+    margin: 10px;
+    color: #000000;
+}
+
+.el-icon-delete:hover {
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.qr {
+    display: flex;
+    align-items: center;
+}
+
+.add-table {
+    width: 110px;
+    height: 35px;
+    margin-left: 12px;
+    border-radius: 5px;
+    border: none;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 </style>

@@ -4,6 +4,10 @@
             <h1>CHI TIẾT ĐƠN HÀNG</h1>
             <div class="info">
                 <span class="datetime">
+                    <label>Mã hóa đơn</label>
+                    <span>{{ order.code }}</span>
+                </span>
+                <span class="datetime">
                     <label>Thời gian</label>
                     <span>{{ order.datetime }}</span>
                 </span>
@@ -18,6 +22,10 @@
                 <span class="status">
                     <label>Trạng thái</label>
                     <span :style="statusStyle(order.status)">{{ order.status }}</span>
+                </span>
+                <span class="table">
+                    <label>Vị trí</label>
+                    <span>{{ order.tableName }}</span>
                 </span>
                 <span class="note" v-if="order.status === 'Đã hủy'">
                     <label>Ghi chú</label>

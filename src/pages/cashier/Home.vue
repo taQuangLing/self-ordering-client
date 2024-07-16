@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="left">
+      <h3 v-if="branchName != ''">{{ branchName }}</h3>
       <TableData class="table-data" 
         :orders="orders" 
         :radioStatus="radioStatus"
@@ -71,6 +72,7 @@ export default {
       fromDate: this.initDate(),
       toDate: this.initDate(),
       orders: [],
+      branchName: '',
     };
   },
   methods: {
@@ -93,22 +95,38 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    getBranch(){
+      axios.get(this.$store.state.baseUrl + "/cashier/v1/branches/" + localStorage.getItem("id"),
+        { headers: { Authorization: `Bearer ${localStorage.getItem('user')}` } })
+        .then(response => {
+          this.branchName = response.data.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   beforeMount(){
     this.getOrders();
+    this.getBranch();
     this.interval = setInterval(this.getOrders, 10000);
   },
   beforeDestroy(){
     clearInterval(this.interval);
-  }
+  },
 };
 </script>
 
 <style scoped>
+h3 {
+  text-align: left;
+  margin: 10px 0 5px 20px;
+  color: #4b4b4b;
+}
 .table-data {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 39px);
   /* background-color: yellow; */
   display: flex;
   flex-direction: column;
@@ -248,11 +266,11 @@ export default {
   }
 
   .code {
-    width: 13.42%;
+    width: 10.42%;
   }
 
   .datetime {
-    width: 18.16%;
+    width: 10.16%;
   }
 
   .total {
@@ -261,15 +279,19 @@ export default {
   }
 
   .hinh-thuc {
-    width: 12.42%;
+    width: 8.42%;
   }
 
   .payment {
-    width: 19.12%;
+    width: 16.12%;
+  }
+
+  .table {
+    width: 6%;
   }
 
   .status {
-    width: 13.42%;
+    width: 11.42%;
   }
 
   .space {
